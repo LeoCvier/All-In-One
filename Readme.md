@@ -926,4 +926,4 @@ The original concept sketch is included alongside this document as:
 
 ---
 *I used ChatGPT to help clean up my ideas and turn them into this wonderful document.*
-# Plits_ / CreepyPixelMC #
+# LeoCvier #
