@@ -1,34 +1,54 @@
-# All-In-One Tool – Complete Project Idea
+# All-In-One Tool
 
-## 1. Project summary
+The **All-In-One Tool** is a desktop application that combines useful tools and system functions into one clean, modular interface.
 
-The goal is to build a **desktop All-In-One application for Linux** that combines several useful tools and system functions into one clean, modular interface.
+The goal is to make the application feel like a small personal desktop environment/control center rather than a collection of unrelated programs.
 
-The application should feel like a single desktop environment/control center rather than a collection of unrelated programs.
+## Project Status
 
-The planned technology stack is:
+🚧 **Work in Progress**
 
-- **React** – application UI
-- **HTML/CSS** – structure and styling
-- **TypeScript/JavaScript** – frontend logic
-- **Tauri** – desktop application layer
-- **Rust** – native/system functionality where needed
-- **SQLite** – local persistent data such as settings, favorites, logs, etc.
+The project is currently being developed on **Windows**.
 
-The main target is Linux, with a distributable executable/package such as an **AppImage** and/or **.deb**. The architecture should remain portable enough that Windows support could potentially be added later.
+The long-term goal is to support multiple desktop platforms, with Linux support remaining an important target.
 
 ---
 
-# 2. Main UI concept
+## Technology Stack
 
-The main application window is divided into:
+### Frontend
 
-1. A top bar
-2. A left application sidebar
-3. A central application/content area
-4. Optional chat/social area or other dynamically arranged application areas
+- React
+- TypeScript / JavaScript
+- HTML
+- CSS
 
-Conceptually:
+### Desktop
+
+- Tauri
+- Rust
+
+### Data
+
+- SQLite
+
+The general architecture is:
+
+```text
+React
+  ↓
+Tauri
+  ↓
+Rust
+  ↓
+Operating System
+```
+
+---
+
+# Main Concept
+
+The application is designed around four main areas:
 
 ```text
 ┌──────────────────────────────────────────────────────┐
@@ -45,29 +65,25 @@ Conceptually:
 └────┴─────────────────────────────────────────────────┘
 ```
 
-The exact visual design is still flexible.
+The exact design is still evolving.
 
 ---
 
-# 3. Sidebar
+# Sidebar
 
-The left side contains the application's available internal tools/apps.
+The sidebar contains the available internal applications.
 
-Examples:
+Planned applications include:
 
 - Calculator
 - Files
 - Browser
-- Chat/Social
+- Chat / Social
 - System
 - Settings
 - Other future applications
 
-The sidebar should be compact by default.
-
-### Hover behavior
-
-When the mouse moves over the sidebar, it expands.
+The sidebar should remain compact by default and expand when the user moves the mouse over it.
 
 Collapsed:
 
@@ -89,13 +105,11 @@ Expanded:
 │ ⚙️ Settings   │
 ```
 
-The goal is to save screen space while still making the applications easy to identify.
-
 ---
 
-# 4. Application system
+# Internal Application System
 
-The internal tools should be treated as separate **applications/modules** rather than one giant component.
+The internal tools are designed as separate modules rather than one large component.
 
 Possible structure:
 
@@ -110,23 +124,17 @@ apps/
 └── ...
 ```
 
-Each app should have its own UI and logic.
+The application manager controls which applications are available, open, and displayed.
 
-The central application manager decides which apps are open and where they are displayed.
-
-This makes it possible to add/remove applications later without rewriting the whole project.
+This should make it possible to add new applications without rewriting the entire application.
 
 ---
 
-# 5. Screen-Split system
+# Screen Split
 
-One of the core features is an **Application Screen-Split Menu**.
+One of the main features is the ability to display up to **four internal applications simultaneously**.
 
-It should allow the user to use up to **4 internal applications at the same time**.
-
-Possible layouts:
-
-### 1 application
+### One application
 
 ```text
 ┌───────────────────────┐
@@ -136,7 +144,7 @@ Possible layouts:
 └───────────────────────┘
 ```
 
-### 2 applications
+### Two applications
 
 ```text
 ┌──────────────┬────────┐
@@ -146,7 +154,7 @@ Possible layouts:
 └──────────────┴────────┘
 ```
 
-### 3 applications
+### Three applications
 
 ```text
 ┌──────────────┬────────┐
@@ -156,7 +164,7 @@ Possible layouts:
 └──────────────┴────────┘
 ```
 
-### 4 applications
+### Four applications
 
 ```text
 ┌──────────────┬──────────────┐
@@ -166,75 +174,42 @@ Possible layouts:
 └──────────────┴──────────────┘
 ```
 
-The layout should be dynamic rather than hard-coded.
+The layout should be dynamic.
 
-When an application is opened/closed or the main window is resized, the application areas should automatically resize.
-
----
-
-# 6. Dynamic application area
-
-The central content area should automatically adapt to the currently active layout.
-
-For example:
-
-```text
-1 app  →  100% area
-2 apps →  50/50 or configurable
-3 apps →  dynamic grid
-4 apps →  2x2 grid
-```
-
-Eventually the user could potentially drag dividers to resize individual application areas.
+When applications are opened or closed, or when the window is resized, the application areas should automatically adapt.
 
 ---
 
-# 7. Resource overview
+# Resource Monitor
 
-The top bar should show basic system resource usage.
+The top bar should provide a quick overview of system resources.
 
-For example:
+Example:
 
 ```text
 CPU: 23%
 RAM: 47%
 ```
 
-The purpose is to provide a quick overview of system usage without opening a separate system monitor.
+Possible future information:
 
-Possible future additions:
-
+- CPU usage
+- RAM usage
 - GPU usage
 - GPU memory
-- disk usage
-- network activity
-- temperatures
+- Disk usage
+- Network activity
+- Temperatures
 
-The system information should preferably be obtained by the native/Tauri backend rather than repeatedly executing arbitrary shell commands from the frontend.
-
-Conceptually:
-
-```text
-Linux
-  ↓
-Rust/Tauri
-  ↓
-System information
-  ↓
-React
-  ↓
-CPU / RAM display
-```
+System information should preferably be provided through the Tauri/Rust backend rather than relying on arbitrary shell commands from the frontend.
 
 ---
 
-# 8. Calculator
+# Calculator
 
-A simple internal calculator is one of the planned applications.
+The calculator will be an internal application.
 
-It should work completely inside the All-In-One Tool.
-
-Possible future functionality:
+Possible functionality:
 
 - Basic arithmetic
 - Scientific functions
@@ -244,9 +219,9 @@ Possible future functionality:
 
 ---
 
-# 9. File application
+# File Application
 
-The tool should contain an internal file-management area.
+The project is planned to contain an internal file-management application.
 
 Possible functionality:
 
@@ -258,13 +233,13 @@ Possible functionality:
 - Recently opened files
 - File information
 
-The exact permission model should be designed carefully.
+The exact permission model will be designed during development.
 
 ---
 
-# 10. Star / Favorites system
+# Favorites
 
-There should be a **star button** in the main interface for quick access to important files/items.
+The application should contain a star/favorites system.
 
 Example:
 
@@ -275,9 +250,11 @@ Example:
 ⭐ Important File
 ```
 
-The favorites should persist between application launches.
+Favorites should persist between application launches.
 
-A local SQLite database could store:
+SQLite may be used to store this information.
+
+Possible database structure:
 
 ```text
 favorites
@@ -288,19 +265,17 @@ path
 created_at
 ```
 
-The star system could eventually be extended to applications, folders, websites, settings, etc.
+The system could later be expanded to support applications, folders, websites, settings, and other items.
 
 ---
 
-# 11. Browser
+# Browser
 
-The All-In-One Tool may contain a **mini browser**.
+The project may contain a small internal browser.
 
-It should be treated as its own internal application/module.
+Possible functionality:
 
-Possible features:
-
-- URL/address bar
+- Address bar
 - Back
 - Forward
 - Reload
@@ -310,7 +285,7 @@ Possible features:
 - Downloads
 - Basic browser settings
 
-Conceptually:
+Possible structure:
 
 ```text
 apps/
@@ -321,58 +296,50 @@ apps/
     └── BrowserSettings
 ```
 
-Important technical note:
-
-Tauri itself is not a complete browser engine. A browser/webview component and its required functionality would need to be implemented/integrated separately.
-
-The goal is initially a **useful mini browser inside the app**, not necessarily a replacement for Brave/Firefox/Chromium.
+The goal is initially to provide a useful mini browser rather than replace full browsers such as Firefox, Chromium, or Brave.
 
 ---
 
-# 12. Chat / Social area
+# Chat / Social
 
-There should be a Chat/Social section.
+The application should contain a Chat/Social area.
 
-According to the original concept, it can open a menu from the **right side** where the user can access/check things such as:
+Possible services include:
 
 - Mail
 - WhatsApp
 - Discord
-- Other chats/social services
+- Other communication services
 
-The idea is to have communication available without requiring several separate windows.
+The project should not attempt to recreate every service from scratch.
 
-Important architectural principle:
+Depending on the service, integrations may use:
 
-Do not attempt to recreate every service from scratch.
+- Web interfaces
+- Official APIs
+- Other supported integrations
 
-Depending on the service, the implementation could use:
-
-- web interfaces
-- official APIs where available
-- supported integrations
-
-The Chat/Social area should remain modular.
+The Chat/Social system should remain modular.
 
 ---
 
-# 13. Chat layout / automatic resizing
+# Dynamic Layout
 
-The original UI concept includes a dedicated area where chats can appear.
+The application should automatically resize its internal areas when additional applications or the chat area are opened.
 
-If the chat/application area is opened, the other application area should automatically resize.
-
-Example:
+For example:
 
 ```text
-Without chat:
+Without Chat:
 
 ┌─────────────────────────────┐
-│        Main Application     │
+│                             │
+│       Main Application      │
+│                             │
 └─────────────────────────────┘
 ```
 
-With chat:
+With Chat:
 
 ```text
 ┌──────────────────────┬──────┐
@@ -382,13 +349,13 @@ With chat:
 └──────────────────────┴──────┘
 ```
 
-This should be handled by the central layout manager.
+The layout manager should handle this dynamically.
 
 ---
 
-# 14. User menu
+# User Menu
 
-The top-right contains a **User** menu.
+The top-right area contains a user menu.
 
 Possible functionality:
 
@@ -400,99 +367,34 @@ Possible functionality:
 - Application preferences
 - Access/logging information
 
-The exact authentication design is still open.
+The exact authentication system is still being designed.
 
 ---
 
-# 15. Access protection / login concept
+# Security
 
-A planned security feature is to prevent other people using the same computer from freely accessing sensitive information inside the application.
+A future security system should protect sensitive information from other users of the computer.
 
-Possible concept:
+Possible functionality:
 
-- User account/login
+- User accounts
+- Login/logout
 - Password protection
 - Lock screen
-- Sensitive sections requiring authentication
-- Logout
-- Automatic locking after inactivity
+- Automatic locking
+- Protected sections
 
-The security system should be designed so that sensitive data is not merely hidden in the UI but actually protected.
+Passwords must never be stored in plain text.
 
-Do not store passwords in plain text.
-
-Use an established password-hashing/authentication approach.
+An established password-hashing/authentication solution should be used.
 
 ---
 
-# 16. Device/access logging
+# Activity & Access Logs
 
-A planned feature is an activity/access log.
+The application is planned to have a logging system.
 
-The original idea included tracking information about connected/accessing computers, potentially including:
-
-- IP address
-- MAC address where technically available
-- connection/access events
-- login events
-- application access
-- settings changes
-
-Example:
-
-```text
-2026-08-28 14:31
-User logged in
-
-2026-08-28 14:35
-Opened Files
-
-2026-08-28 14:37
-Opened Browser
-
-2026-08-28 14:40
-Settings changed
-```
-
-For privacy/security reasons, logging should be transparent to the user and only collect information that is actually needed.
-
-The system should also distinguish between:
-
-- local application activity
-- network connections
-- authenticated users/devices
-
----
-
-# 17. First connection / new device concept
-
-A previous idea for a future network/cloud component was:
-
-When a new computer/device connects for the first time, the system can require authentication/password setup before granting access.
-
-Conceptually:
-
-```text
-New device detected
-        ↓
-Authentication required
-        ↓
-Password / account verification
-        ↓
-Access granted
-        ↓
-Device remembered
-```
-
-This is intended as an access-control mechanism, not as invisible tracking.
-
----
-
-# 18. Logs
-
-There should be a dedicated log area.
-
-Possible log categories:
+Possible categories:
 
 ```text
 System
@@ -513,25 +415,15 @@ Example:
 [ERROR] Application failed to start
 ```
 
-Logs should be searchable/filterable later.
+Logs should be transparent and should only collect information that is actually required.
 
 ---
 
-# 19. Cloud
+# Cloud
 
-Cloud functionality is planned but **not part of the first implementation**.
+Cloud functionality is **not part of the first implementation**.
 
-The UI can already contain:
-
-```text
-☁ Cloud
-
-In Arbeit
-```
-
-The cloud backend should be developed later after the local application is stable.
-
-Potential future functionality:
+A future version may contain:
 
 - File synchronization
 - Remote access
@@ -540,13 +432,13 @@ Potential future functionality:
 - Account-based storage
 - Secure remote connections
 
-Do not over-engineer the cloud system during the first versions.
+The initial versions should focus on building a stable local desktop application.
 
 ---
 
-# 20. Architecture
+# Architecture
 
-Recommended high-level architecture:
+High-level architecture:
 
 ```text
                     ALL-IN-ONE TOOL
@@ -560,7 +452,7 @@ Recommended high-level architecture:
              │                           │
              └─────────────┬─────────────┘
                            │
-                        Linux OS
+                    Windows / Linux
 ```
 
 Frontend:
@@ -571,7 +463,7 @@ TypeScript
 CSS
 ```
 
-Desktop/native layer:
+Desktop layer:
 
 ```text
 Tauri
@@ -586,13 +478,14 @@ SQLite
 
 ---
 
-# 21. Suggested project structure
+# Project Structure
+
+A possible project structure:
 
 ```text
 all-in-one-tool/
 │
 ├── src/
-│   │
 │   ├── app/
 │   │   ├── App.tsx
 │   │   ├── AppManager.ts
@@ -636,53 +529,15 @@ all-in-one-tool/
 └── database/
 ```
 
-This is an example architecture, not a final requirement.
+This is a proposed structure and can change as the project develops.
 
 ---
 
-# 22. App Manager concept
+# Development Roadmap
 
-The application manager should know which internal apps are available and which are currently open.
+The project should be developed incrementally.
 
-Conceptually:
-
-```text
-AppManager
-│
-├── registered applications
-│
-├── open applications
-│
-├── active application
-│
-└── layout assignments
-```
-
-Example:
-
-```text
-Registered:
-- Calculator
-- Files
-- Browser
-- Chat
-- Settings
-
-Currently open:
-- Browser
-- Files
-- Chat
-```
-
-The Screen-Split system then decides where those applications appear.
-
----
-
-# 23. Recommended development order
-
-Do NOT build every feature at once.
-
-### Version 0.1 – Foundation
+## Version 0.1 – Foundation
 
 Build:
 
@@ -697,10 +552,14 @@ Build:
 Goal:
 
 ```text
-A real Linux desktop application opens.
+A real desktop application opens on Windows.
 ```
 
-### Version 0.2 – Internal app system
+Linux compatibility should be considered during development so that platform-specific code does not unnecessarily prevent future Linux builds.
+
+---
+
+## Version 0.2 – Internal Applications
 
 Add:
 
@@ -710,18 +569,22 @@ Add:
 - Application switching
 - Sidebar hover behavior
 
-### Version 0.3 – Screen Split
+---
+
+## Version 0.3 – Screen Split
 
 Add:
 
-- 1 app
-- 2 apps
-- 3 apps
-- 4 apps
+- 1 application
+- 2 applications
+- 3 applications
+- 4 applications
 - Automatic resizing
-- Dynamic layout
+- Dynamic layouts
 
-### Version 0.4 – System information
+---
+
+## Version 0.4 – System Information
 
 Add:
 
@@ -729,18 +592,22 @@ Add:
 - RAM
 - Disk
 - Network
-- optional GPU information
+- Optional GPU information
 
-### Version 0.5 – Files + Favorites
+---
+
+## Version 0.5 – Files & Favorites
 
 Add:
 
 - File browser
-- Star/favorites
+- Favorites
 - SQLite
 - Recently used items
 
-### Version 0.6 – Browser
+---
+
+## Version 0.6 – Browser
 
 Add:
 
@@ -750,7 +617,9 @@ Add:
 - Tabs
 - Basic browser settings
 
-### Version 0.7 – Chat/Social
+---
+
+## Version 0.7 – Chat / Social
 
 Add:
 
@@ -759,7 +628,9 @@ Add:
 - Chat panel
 - Automatic layout resizing
 
-### Version 0.8 – Security
+---
+
+## Version 0.8 – Security
 
 Add:
 
@@ -770,7 +641,9 @@ Add:
 - Activity logs
 - Access logs
 
-### Version 0.9 – Polish
+---
+
+## Version 0.9 – Polish
 
 Add:
 
@@ -781,98 +654,80 @@ Add:
 - Performance improvements
 - Accessibility
 
-### Version 1.0 – Stable release
+---
 
-Only after the local application is stable:
+## Version 1.0 – Stable Release
+
+The first stable release should focus on the local desktop application.
+
+After the local application is stable, future development can focus on:
 
 - Cloud functionality
 - Remote functionality
 - More integrations
-- Cross-platform support if desired
+- Linux packaging
+- Additional platform support
 
 ---
 
-# 24. Important design principle
+# Platform Support
 
-The application should feel like **one coherent operating environment**, not like a random collection of mini-programs.
+The current development environment is **Windows**.
+
+The project is intended to remain portable where practical.
+
+Possible future targets include:
+
+```text
+Windows
+Linux
+```
+
+Platform-specific functionality should be isolated where possible.
+
+For example:
+
+```text
+React
+   ↓
+Tauri
+   ↓
+Rust
+   ↓
+Platform-specific functionality
+```
+
+Windows-specific and Linux-specific functionality should not unnecessarily leak into the React application.
+
+---
+
+# Important Design Principle
+
+The application should feel like **one coherent desktop environment**, not a collection of random mini-programs.
 
 The user should be able to:
 
 ```text
 Open All-In-One
        ↓
-Choose an app
+Choose an application
        ↓
-Use several apps simultaneously
+Use several applications simultaneously
        ↓
-Quickly access files/chats/system information
+Quickly access files, chats and system information
        ↓
 Manage everything from one interface
 ```
 
-The UI should remain simple even though the underlying functionality becomes powerful.
+The interface should remain simple even as the underlying functionality becomes more powerful.
 
 ---
 
-# 25. Technology decision
+# Long-Term Vision
 
-Recommended:
+The finished application should become a customizable **desktop productivity and control center**.
 
-```text
-Frontend:
-React + TypeScript + CSS
-
-Desktop:
-Tauri
-
-Native/system:
-Rust
-
-Database:
-SQLite
-
-Packaging:
-AppImage
-.deb
-(possibly other Linux formats later)
-```
-
-React Native is **not necessary** for this project. The project is a desktop application, so regular React is the better fit.
-
----
-
-# 26. Why Tauri fits the project
-
-Tauri allows the existing web-development knowledge to be reused.
-
-The frontend can remain:
-
-```text
-HTML
-CSS
-JavaScript/TypeScript
-React
-```
-
-while Tauri provides the desktop bridge:
-
-```text
-React
-   ↓
-Tauri API
-   ↓
-Rust
-   ↓
-Linux
-```
-
-This allows the application to access native functionality while retaining a web-based UI development workflow.
-
----
-
-# 27. Final project vision
-
-The finished application should essentially be a customizable **Linux productivity/control center**:
+Example:
 
 ```text
 ┌────────────────────────────────────────────────────┐
@@ -888,42 +743,45 @@ The finished application should essentially be a customizable **Linux productivi
 └──────┴─────────────────────────────────────────────┘
 ```
 
-Everything is modular.
+Everything should remain modular.
 
-The user can choose which applications are open, how they are arranged, what is favorited, and which features are available.
+Users should be able to choose which applications are open, how they are arranged, what is favorited, and which features are available.
 
-The long-term idea is to create a **single application that combines tools, system information, files, communication, browser functionality, security, logging and eventually cloud functionality**, while remaining lightweight and native-feeling on Linux.
-
----
-
-# 28. Current status
-
-Known starting point:
-
-- HTML: already known
-- CSS: already known
-- JavaScript: already known
-- React: already known/used
-- Linux/Kubuntu: already being used
-- Tauri: new technology to learn
-- Rust: likely new/less familiar
-- SQLite: can be learned during development
-
-Therefore the project does NOT need to start from zero.
-
-The recommended immediate first milestone is:
-
-**Create a minimal Tauri + React + TypeScript application that opens as a real Linux desktop application, then recreate the main UI from the concept sketch before implementing advanced functionality.**
+The long-term goal is to combine tools, system information, files, communication, browser functionality, security, logging, and eventually cloud functionality into one coherent desktop application.
 
 ---
 
-# 29. Reference sketch
+# Current Knowledge & Learning Goals
 
-The original concept sketch is included alongside this document as:
+The project is also intended as a learning project.
 
-`All-In-One_Tool_Idea.png`
+Current knowledge:
 
+- HTML
+- CSS
+- JavaScript
+- React
+- Linux/Kubuntu
+
+Technologies to learn more deeply:
+
+- Tauri
+- Rust
+- SQLite
+- Desktop application architecture
+
+The project should therefore be developed step-by-step rather than trying to implement every planned feature immediately.
+
+The immediate goal is:
+
+**Create a minimal Tauri + React + TypeScript desktop application on Windows, then recreate the main UI before implementing advanced functionality.**
 
 ---
-*I used ChatGPT to help clean up my ideas and turn them into this wonderful document.*
-# LeoCvier #
+
+## Project Repository
+
+The project is hosted on GitHub:
+
+`https://github.com/LeoCvier/All-In-One`
+
+The repository may change over time, so the README and repository should be treated as the current source of truth for the project's implementation status.
